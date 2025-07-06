@@ -1,35 +1,51 @@
+/* globals.css */
 
+/* Font import (optional but recommended for Inter) */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 
-/* CSS variables for light theme */
+/* Light theme variables */
 :root {
   --background: #fdf6e3;
   --foreground: #4b2e2e;
   --accent: #c9b391;
 }
 
-/* Override variables in dark mode */
+/* Dark theme overrides */
 .dark {
   --background: #2e2a25;
   --foreground: #d9c7a5;
   --accent: #806a5a;
 }
 
-/* Apply variables to body for background and text */
+/* Global base styles */
 body {
   background-color: var(--background);
   color: var(--foreground);
   font-family: 'Inter', Arial, Helvetica, sans-serif;
-  transition: background-color 0.5s ease, color 0.5s ease;
+  transition: background-color 0.4s ease, color 0.4s ease;
+  margin: 0;
+  padding: 0;
 }
 
-/* Optional: Style links or buttons with accent color */
+/* Link and button accent styling */
 a,
 button {
   color: var(--accent);
-  transition: color 0.3s ease;
+  transition: color 0.3s ease, background-color 0.3s ease;
+  text-decoration: none;
 }
 
+/* Hover effects */
 a:hover,
 button:hover {
   color: var(--foreground);
+}
+
+/* Optional utility classes */
+.text-accent {
+  color: var(--accent);
+}
+
+.bg-accent {
+  background-color: var(--accent);
 }
