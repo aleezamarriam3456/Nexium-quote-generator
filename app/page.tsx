@@ -33,69 +33,87 @@ export default function Home() {
   };
 
   return (
-    <main className="max-w-2xl mx-auto p-6 space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Quote Generator</h1>
-        <ModeToggle />
-      </div>
+    <main className="min-h-screen bg-[#fdf6e3] text-[#4b2e2e] py-12 px-6 sm:px-10 font-sans">
+      <div className="max-w-2xl mx-auto space-y-8">
+        {/* Header */}
+        <div className="flex justify-between items-center">
+          <h1 className="text-4xl font-bold tracking-tight">Quote Generator</h1>
+          <ModeToggle />
+        </div>
 
-      <div className="flex gap-2">
-        <Input
-          placeholder="Enter a keyword (e.g., motivation)"
-          value={keyword}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setKeyword(e.target.value)}
-          onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
-            if (e.key === "Enter") handleSearch();
-          }}
-        />
-        <Button onClick={() => handleSearch()}>Search</Button>
-      </div>
-
-      <div className="flex gap-2 flex-wrap">
-        {tags.map((tag) => (
-          <Button
-            key={tag}
-            variant="outline"
-            onClick={() => {
-              setKeyword(tag);
-              handleSearch(tag);
+        {/* Input Section */}
+        <div className="flex gap-2 flex-col sm:flex-row">
+          <Input
+            placeholder="Enter a keyword (e.g., motivation)"
+            value={keyword}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setKeyword(e.target.value)}
+            onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
+              if (e.key === "Enter") handleSearch();
             }}
+            className="bg-[#fffaf2] border-[#d9c7a5] text-[#4b2e2e] placeholder:text-[#a48c7b]"
+          />
+          <Button
+            onClick={() => handleSearch()}
+            className="bg-[#4b2e2e] text-white hover:bg-[#3a1f1f]"
           >
-            {tag}
+            Search
           </Button>
-        ))}
-      </div>
+        </div>
 
-      {keyword && (
-        <p className="text-sm text-gray-500">
-          {results.length} quote{results.length !== 1 && "s"} found for "{keyword}"
-        </p>
-      )}
-
-      {results.length > 0 ? (
-        <div className="space-y-4" ref={quoteRef}>
-          {results.map((q, index) => (
-            <motion.div
-              key={index}
-              className="p-4 rounded-md shadow-md border bg-muted"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4 }}
+        {/* Tag Buttons */}
+        <div className="flex gap-2 flex-wrap">
+          {tags.map((tag) => (
+            <Button
+              key={tag}
+              variant="outline"
+              className="border-[#c9b391] text-[#4b2e2e] hover:bg-[#f7f1e4]"
+              onClick={() => {
+                setKeyword(tag);
+                handleSearch(tag);
+              }}
             >
-              <p className="text-lg italic">“{q.quote}”</p>
-              <p className="text-right text-sm mt-2">— {q.author}</p>
-            </motion.div>
+              {tag}
+            </Button>
           ))}
         </div>
-      ) : (
-        keyword && <p className="text-red-500">No matching quotes found.</p>
-      )}
 
-      {results.length > 0 && (
-        <Button onClick={handleDownload} className="mt-4">
-          Download All Quotes as Image
-        </Button>
-      )}
+        {/* Result Count */}
+        {keyword && (
+          <p className="text-sm text-[#806a5a] italic">
+            {results.length} quote{results.length !== 1 && "s"} found for "{keyword}"
+          </p>
+        )}
+
+        {/* Quotes Display */}
+        {results.length > 0 ? (
+          <div className="space-y-4" ref={quoteRef}>
+            {results.map((q, index) => (
+              <motion.div
+                key={index}
+                className="p-6 rounded-xl border border-[#e5d8c0] bg-white/70 backdrop-blur shadow-md transition-all hover:scale-[1.02]"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4 }}
+              >
+                <p className="text-lg italic font-medium text-[#4b2e2e]">“{q.quote}”</p>
+                <p className="text-sm text-right mt-2 text-[#806a5a]">— {q.author}</p>
+              </motion.div>
+            ))}
+          </div>
+        ) : (
+          keyword && <p className="text-red-600 italic">No matching quotes found.</p>
+        )}
+
+        {/* Download Button */}
+        {results.length > 0 && (
+          <Button
+            onClick={handleDownload}
+            className="bg-[#4b2e2e] text-white hover:bg-[#3a1f1f] mt-4"
+          >
+            Download All Quotes as Image
+          </Button>
+        )}
+      </div>
     </main>
   );
 }
