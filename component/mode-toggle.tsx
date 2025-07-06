@@ -4,27 +4,29 @@ import { useTheme } from "next-themes";
 import { Sun, Moon } from "lucide-react";
 
 export function ModeToggle() {
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme, resolvedTheme } = useTheme();
 
-  // Toggle between 'dark' and 'light' themes
+  // Determine actual current theme (handles system preference)
+  const currentTheme = theme === "system" ? resolvedTheme : theme;
+
+  // Toggle between 'dark' and 'light'
   const toggleTheme = () => {
-    setTheme(theme === "dark" ? "light" : "dark");
+    setTheme(currentTheme === "dark" ? "light" : "dark");
   };
 
   return (
     <button
       onClick={toggleTheme}
       aria-label="Toggle Dark Mode"
-      style={{
-        background: "transparent",
-        border: "none",
-        cursor: "pointer",
-        padding: "8px",
-      }}
       title="Toggle Dark Mode"
       type="button"
+      className="p-2 rounded-full hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors duration-200 ease-in-out"
     >
-      {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+      {currentTheme === "dark" ? (
+        <Sun size={20} className="text-yellow-400" />
+      ) : (
+        <Moon size={20} className="text-gray-800" />
+      )}
     </button>
   );
 }

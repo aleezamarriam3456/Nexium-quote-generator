@@ -1,26 +1,36 @@
-@import "tailwindcss";
+/* globals.css */
+@tailwind utilities;
 
+/* CSS variables for light theme */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fdf6e3;
+  --foreground: #4b2e2e;
+  --accent: #c9b391;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Override variables in dark mode */
+.dark {
+  --background: #2e2a25;
+  --foreground: #d9c7a5;
+  --accent: #806a5a;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* Apply variables to body for background and text */
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+/* Optional: Style links or buttons with accent color */
+a,
+button {
+  color: var(--accent);
+  transition: color 0.3s ease;
+}
+
+a:hover,
+button:hover {
+  color: var(--foreground);
 }
