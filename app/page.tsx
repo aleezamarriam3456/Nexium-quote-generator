@@ -53,7 +53,7 @@ export default function Home() {
   return (
     <>
       <main className="min-h-screen bg-[#fdf6e3] dark:bg-[#2e2a25] text-[#4b2e2e] dark:text-[#d9c7a5] py-12 px-6 sm:px-10 transition-colors duration-500 flex flex-col">
-        <div className="max-w-2xl mx-auto space-y-8 font-sans flex-grow">
+        <div className="max-w-2xl mx-auto space-y-10 font-sans flex-grow">
           {/* Header */}
           <div className="flex justify-between items-center">
             <h1 className="text-4xl font-extrabold tracking-tight">Quote Generator</h1>
@@ -61,19 +61,19 @@ export default function Home() {
           </div>
 
           {/* Dashboard Panel */}
-          <section className="bg-white/80 dark:bg-[#3a3123] border border-[#c9b391] dark:border-[#7f7152] rounded-xl p-6 shadow-md flex flex-col sm:flex-row justify-between items-center gap-4">
-            <div>
-              <p className="font-semibold text-lg">
-                Total Quotes: <span className="text-[#4b2e2e] dark:text-[#d9c7a5]">{totalQuotes}</span>
-              </p>
-              <p className="font-semibold text-lg">
-                Unique Tags: <span className="text-[#4b2e2e] dark:text-[#d9c7a5]">{totalTags}</span>
-              </p>
+          <section className="grid grid-cols-1 sm:grid-cols-2 gap-6 bg-white/80 dark:bg-[#3a3123] border border-[#c9b391] dark:border-[#7f7152] rounded-xl p-6 shadow-md">
+            <div className="p-4 rounded-lg bg-[#f3e9da] dark:bg-[#4b3c29] flex flex-col items-center justify-center shadow-md">
+              <p className="text-xl font-semibold mb-2">Total Quotes</p>
+              <p className="text-3xl font-extrabold text-[#4b2e2e] dark:text-[#d9c7a5]">{totalQuotes}</p>
             </div>
-            <div>
+            <div className="p-4 rounded-lg bg-[#f3e9da] dark:bg-[#4b3c29] flex flex-col items-center justify-center shadow-md">
+              <p className="text-xl font-semibold mb-2">Unique Tags</p>
+              <p className="text-3xl font-extrabold text-[#4b2e2e] dark:text-[#d9c7a5]">{totalTags}</p>
+            </div>
+            <div className="sm:col-span-2 flex justify-center">
               <Button
                 onClick={handleClearSearch}
-                className="bg-[#4b2e2e] dark:bg-[#d1b280] text-white dark:text-[#4b2e2e] rounded-full px-6 py-2 shadow-md hover:bg-[#3a1f1f] dark:hover:bg-[#b39356] transition duration-300"
+                className="bg-[#4b2e2e] dark:bg-[#d1b280] text-white dark:text-[#4b2e2e] rounded-full px-10 py-3 shadow-md hover:bg-[#3a1f1f] dark:hover:bg-[#b39356] transition duration-300"
               >
                 Clear Search
               </Button>
@@ -81,7 +81,7 @@ export default function Home() {
           </section>
 
           {/* Input Section */}
-          <div className="flex gap-2 flex-col sm:flex-row">
+          <section className="flex flex-col gap-4">
             <Input
               placeholder="Enter a keyword (e.g., motivation)"
               value={keyword}
@@ -89,18 +89,18 @@ export default function Home() {
               onKeyDown={(e) => {
                 if (e.key === "Enter") handleSearch();
               }}
-              className="bg-white dark:bg-[#3a3123] border border-[#c9b391] text-[#4b2e2e] dark:text-[#d9c7a5] placeholder:text-[#a48c7b] dark:placeholder:text-[#b4a78e] rounded-full px-4 py-2 focus:ring-2 focus:ring-[#c9b391] dark:focus:ring-[#a58f66]"
+              className="bg-white dark:bg-[#3a3123] border border-[#c9b391] text-[#4b2e2e] dark:text-[#d9c7a5] placeholder:text-[#a48c7b] dark:placeholder:text-[#b4a78e] rounded-full px-6 py-3 focus:ring-2 focus:ring-[#c9b391] dark:focus:ring-[#a58f66]"
             />
-            <button
+            <Button
               onClick={() => handleSearch()}
-              className="bg-[#4b2e2e] text-white dark:bg-[#d1b280] dark:text-[#4b2e2e] px-6 py-2 rounded-full font-medium shadow-md hover:shadow-lg hover:bg-[#3a1f1f] dark:hover:bg-[#b39356] transition duration-300"
+              className="bg-[#4b2e2e] text-white dark:bg-[#d1b280] dark:text-[#4b2e2e] py-3 rounded-full font-medium shadow-md hover:shadow-lg hover:bg-[#3a1f1f] dark:hover:bg-[#b39356] transition duration-300 w-full"
             >
               Search
-            </button>
-          </div>
+            </Button>
+          </section>
 
           {/* Tag Buttons */}
-          <div className="flex flex-wrap justify-center gap-3">
+          <section className="flex flex-wrap justify-center gap-3">
             {tags.map((tag) => (
               <button
                 key={tag}
@@ -113,7 +113,7 @@ export default function Home() {
                 {tag}
               </button>
             ))}
-          </div>
+          </section>
 
           {/* Result Count */}
           {keyword && results.length > 0 && (
@@ -139,9 +139,7 @@ export default function Home() {
                     transition={{ duration: 0.3, delay: index * 0.1 }}
                     className="bg-white/70 dark:bg-[#3a3123] border border-[#e5d8c0] dark:border-[#7f7152] rounded-xl px-5 py-4 shadow-md"
                   >
-                    <p className="text-lg italic leading-relaxed">
-                      “{q.quote}”
-                    </p>
+                    <p className="text-lg italic leading-relaxed">“{q.quote}”</p>
                     <p className="text-right mt-2 text-sm font-medium text-[#806a5a] dark:text-[#b4a78e]">
                       — {q.author}
                     </p>
@@ -160,16 +158,16 @@ export default function Home() {
           {/* Download Buttons */}
           {results.length > 0 && (
             <div className="text-center mt-8 space-y-4">
-              <div className="inline-block rounded-full bg-[#f3e9da] dark:bg-[#4b3c29] px-6 py-4 shadow-md space-x-4">
+              <div className="inline-block rounded-full bg-[#f3e9da] dark:bg-[#4b3c29] px-6 py-4 shadow-md space-y-4 sm:space-y-0 sm:flex sm:space-x-4">
                 <Button
                   onClick={handleDownloadImage}
-                  className="bg-[#4b2e2e] dark:bg-[#d1b280] text-white dark:text-[#4b2e2e] rounded-full px-6 py-2 hover:bg-[#3a1f1f] dark:hover:bg-[#b39356] transition duration-300"
+                  className="bg-[#4b2e2e] dark:bg-[#d1b280] text-white dark:text-[#4b2e2e] rounded-full px-6 py-2 hover:bg-[#3a1f1f] dark:hover:bg-[#b39356] transition duration-300 w-full sm:w-auto"
                 >
                   Download as Image
                 </Button>
                 <Button
                   onClick={handleDownloadPDF}
-                  className="bg-[#6a4e3d] dark:bg-[#e4c89d] text-white dark:text-[#4b2e2e] rounded-full px-6 py-2 hover:bg-[#553628] dark:hover:bg-[#d2b37e] transition duration-300"
+                  className="bg-[#6a4e3d] dark:bg-[#e4c89d] text-white dark:text-[#4b2e2e] rounded-full px-6 py-2 hover:bg-[#553628] dark:hover:bg-[#d2b37e] transition duration-300 w-full sm:w-auto"
                 >
                   Download as PDF
                 </Button>
@@ -179,8 +177,23 @@ export default function Home() {
         </div>
       </main>
 
-      <footer className="bg-[#c9b391] dark:bg-[#806a5a] text-[#4b2e2e] dark:text-[#fdf6e3] py-4 text-center font-semibold font-serif select-none">
-        © 2025 Nexium — Inspiring Quotes for You
+      <footer className="bg-[#c9b391] dark:bg-[#806a5a] text-[#4b2e2e] dark:text-[#fdf6e3] py-8 px-6 text-center font-semibold font-serif select-none space-y-4">
+        <p>© 2025 Nexium — Inspiring Quotes for You</p>
+        <div className="flex justify-center gap-6">
+          {/* Replace with your actual links or icons */}
+          <a href="#" aria-label="Facebook" className="hover:underline">
+            Facebook
+          </a>
+          <a href="#" aria-label="Twitter" className="hover:underline">
+            Twitter
+          </a>
+          <a href="#" aria-label="LinkedIn" className="hover:underline">
+            LinkedIn
+          </a>
+        </div>
+        <p className="text-sm text-[#6b5c46] dark:text-[#c9b391]">
+          Designed and developed by Nexium Team
+        </p>
       </footer>
     </>
   );

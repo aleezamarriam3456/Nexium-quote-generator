@@ -1,6 +1,6 @@
 /* globals.css */
 
-/* Import Google Font */
+/* Import Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@700&display=swap');
 
 /* Light mode theme colors */
@@ -24,7 +24,7 @@
   box-sizing: border-box;
 }
 
-/* Body base styles */
+/* Body base styles with flex for sticky footer */
 body {
   background-color: var(--background);
   color: var(--foreground);
@@ -35,13 +35,13 @@ body {
   flex-direction: column;
 }
 
-/* Main container to fill vertical space properly */
+/* Main container grows to fill space */
 main {
   flex: 1 0 auto;
-  padding: 1rem 1rem 3rem; /* bottom padding to avoid overlap with footer */
+  padding: 1rem 1rem 3rem; /* bottom padding to avoid footer overlap */
 }
 
-/* Stylish headings: use Playfair Display for titles */
+/* Stylish headings with Playfair Display */
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Playfair Display', serif;
   font-weight: 700;
@@ -66,7 +66,7 @@ button {
   user-select: none;
 }
 
-/* Add margin-right to buttons to space them out */
+/* Space between adjacent buttons and anchors */
 button + button,
 button + a,
 a + button {
@@ -141,7 +141,7 @@ input[type="search"]:focus {
   font-size: 1.125rem;
 }
 
-/* Footer to cover extra space */
+/* Footer to cover extra space and styled */
 footer {
   flex-shrink: 0;
   padding: 1rem 2rem;
@@ -160,7 +160,7 @@ ul {
   padding-left: 1.25rem; /* bullet indent */
 }
 
-/* Optional: Stylish list bullets */
+/* Stylish list bullets */
 ul.list-disc {
   list-style-type: disc;
   list-style-position: inside;
