@@ -1,29 +1,30 @@
 /* globals.css */
 
-/* Optional Google Font */
+/* Import Google Font */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 
-/* Light mode theme */
+/* Light mode theme colors */
 :root {
   --background: #fdf6e3;
   --foreground: #4b2e2e;
   --accent: #c9b391;
 }
 
-/* Dark mode override */
+/* Dark mode override colors */
 .dark {
   --background: #2e2a25;
   --foreground: #d9c7a5;
   --accent: #806a5a;
 }
 
-/* Global base styles */
+/* Reset margin, padding, and box sizing */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* Body base styles */
 body {
   background-color: var(--background);
   color: var(--foreground);
@@ -33,7 +34,7 @@ body {
   min-height: 100vh;
 }
 
-/* Link & button color styles */
+/* Anchor and button base styles */
 a,
 button {
   color: var(--accent);
@@ -41,15 +42,29 @@ button {
   border: none;
   cursor: pointer;
   font-size: 1rem;
-  transition: color 0.3s ease, background-color 0.3s ease;
+  font-weight: 600;
+  font-family: 'Inter', Arial, sans-serif;
+  transition: color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 9999px; /* fully rounded */
+  padding: 0.5rem 1.5rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
+/* Button hover */
 a:hover,
 button:hover {
-  color: var(--foreground);
+  color: var(--background);
+  background-color: var(--foreground);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 }
 
-/* Input styling */
+/* Button focus (keyboard accessibility) */
+button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Input text and search styling */
 input[type="text"],
 input[type="search"] {
   padding: 0.5rem 1rem;
@@ -58,16 +73,20 @@ input[type="search"] {
   background: #fff;
   color: var(--foreground);
   font-size: 1rem;
+  font-weight: 500;
+  font-family: 'Inter', Arial, sans-serif;
   outline: none;
-  transition: border-color 0.3s ease;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* Input focus */
 input[type="text"]:focus,
 input[type="search"]:focus {
   border-color: var(--foreground);
+  box-shadow: 0 0 5px var(--foreground);
 }
 
-/* Custom utility classes */
+/* Utility classes for accent color */
 .text-accent {
   color: var(--accent);
 }
