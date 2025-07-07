@@ -10,37 +10,27 @@ import { motion } from "framer-motion";
 import { ModeToggle } from "@/component/mode-toggle";
 
 export default function Home() {
-  // State to hold current keyword for searching quotes
   const [keyword, setKeyword] = useState("");
-
-  // State to hold filtered quote results based on keyword search
   const [results, setResults] = useState<typeof quotes>([]);
-
-  // Ref for the quotes container, used for image/pdf download
+  const [searched, setSearched] = useState(false);
   const quoteRef = useRef<HTMLDivElement | null>(null);
 
-  // Preset tags for quick filtering
   const tags = ["Motivation", "Success", "Growth", "Leadership", "Focus"];
 
-  // Static dashboard stats for demo purpose
-  const totalQuotes = 30;
-  const totalTags = 44;
-
-  // Function to filter quotes by tag keyword (case-insensitive)
   const handleSearch = (key = keyword) => {
     const filtered = quotes.filter((q) =>
       q.tags.some((tag) => tag.toLowerCase().includes(key.toLowerCase()))
     );
-    setResults(filtered.slice(0, 3)); // Limit results to first 3
+    setResults(filtered.slice(0, 3));
+    setSearched(true);
   };
 
-  // Clears search input and results
   const handleClearSearch = () => {
     setKeyword("");
     setResults([]);
+    setSearched(false);
   };
 
-  // Downloads the visible quote list as an image (PNG)
   const handleDownloadImage = async () => {
     if (quoteRef.current) {
       const canvas = await html2canvas(quoteRef.current);
@@ -51,7 +41,6 @@ export default function Home() {
     }
   };
 
-  // Downloads the visible quote list as a PDF file
   const handleDownloadPDF = () => {
     const doc = new jsPDF();
     results.forEach((q, i) => {
@@ -64,28 +53,25 @@ export default function Home() {
     <>
       <main className="min-h-screen bg-[#fdf6e3] dark:bg-[#2e2a25] text-[#4b2e2e] dark:text-[#d9c7a5] py-12 px-6 sm:px-10 transition-colors duration-500 flex flex-col">
         <div className="max-w-2xl mx-auto space-y-8 font-sans flex-grow">
-          {/* Header Section with Title and Theme Toggle */}
-          <div className="flex justify-between items-center">
-            <h1 className="text-4xl font-extrabold tracking-tight">Quote Generator</h1>
-            <ModeToggle />
-          </div>
+          <h1 className="text-4xl font-extrabold tracking-tight text-center">
+            Quote Generator
+          </h1>
 
-          {/* Dashboard Section showing stats and buttons */}
-          <section className="dashboard">
-            {/* Display total quotes */}
-            <div>
-              <p>Total Quotes</p>
-              <p className="text-3xl">{totalQuotes}</p>
+          {/* Dashboard */}
+          <section className="dashboard flex flex-wrap justify-center gap-6 mb-6">
+            <div
+              className="dashboard-item cursor-pointer text-center"
+              onClick={() => alert(`Total Quotes: ${quotes.length}`)}
+            >
+              <p className="dashboard-label font-semibold text-lg">Total Quotes</p>
             </div>
-
-            {/* Display unique tags count */}
-            <div>
-              <p>Unique Tags</p>
-              <p className="text-3xl">{totalTags}</p>
+            <div
+              className="dashboard-item cursor-pointer text-center"
+              onClick={() => alert(`Unique Tags: ${tags.length}`)}
+            >
+              <p className="dashboard-label font-semibold text-lg">Unique Tags</p>
             </div>
-
-            {/* Dashboard buttons: Mode toggle and Clear search */}
-            <div className="dashboard-buttons">
+            <div className="dashboard-buttons flex gap-4">
               <ModeToggle />
               <Button
                 onClick={handleClearSearch}
@@ -96,33 +82,36 @@ export default function Home() {
             </div>
           </section>
 
-          {/* Search Input and Search Button stacked vertically */}
-          <div className="flex flex-col gap-3 max-w-md mx-auto">
+          {/* Search Input and Button */}
+          <div className="search-section flex flex-col gap-4 items-center">
             <Input
               placeholder="Enter a keyword (e.g., motivation)"
               value={keyword}
-              onChange={(e) => setKeyword(e.target.value)}
+              onChange={(e) => {
+                setKeyword(e.target.value);
+                setSearched(false);
+              }}
               onKeyDown={(e) => {
                 if (e.key === "Enter") handleSearch();
               }}
-              className="bg-white dark:bg-[#3a3123] border border-[#c9b391] text-[#4b2e2e] dark:text-[#d9c7a5] placeholder:text-[#a48c7b] dark:placeholder:text-[#b4a78e] rounded-full px-4 py-2 focus:ring-2 focus:ring-[#c9b391] dark:focus:ring-[#a58f66]"
+              className="w-full bg-white dark:bg-[#3a3123] border border-[#c9b391] text-[#4b2e2e] dark:text-[#d9c7a5] placeholder:text-[#a48c7b] dark:placeholder:text-[#b4a78e] rounded-full px-4 py-2 focus:ring-2 focus:ring-[#c9b391] dark:focus:ring-[#a58f66]"
             />
-            <button
+            <Button
               onClick={() => handleSearch()}
-              className="bg-[#4b2e2e] text-white dark:bg-[#d1b280] dark:text-[#4b2e2e] px-6 py-2 rounded-full font-medium shadow-md hover:shadow-lg hover:bg-[#3a1f1f] dark:hover:bg-[#b39356] transition duration-300 mx-auto"
+              className="bg-[#4b2e2e] text-white dark:bg-[#d1b280] dark:text-[#4b2e2e] px-6 py-2 rounded-full font-medium shadow-md hover:shadow-lg hover:bg-[#3a1f1f] dark:hover:bg-[#b39356] transition duration-300"
             >
               Search
-            </button>
+            </Button>
           </div>
 
-          {/* Tag Buttons for quick search */}
-          <div className="flex flex-wrap justify-center gap-3 mt-6">
+          {/* Tag Buttons */}
+          <div className="tag-buttons flex flex-wrap justify-center gap-3 mt-4">
             {tags.map((tag) => (
               <button
                 key={tag}
                 onClick={() => {
                   setKeyword(tag);
-                  handleSearch(tag);
+                  setSearched(false);
                 }}
                 className="px-5 py-2 rounded-full border border-[#c9b391] dark:border-[#a58f66] bg-white/80 dark:bg-[#3d3322] text-[#4b2e2e] dark:text-[#d9a78e] hover:bg-[#f2e5d1] dark:hover:bg-[#4a3b27] font-semibold tracking-wide shadow-sm transition-all duration-300"
               >
@@ -131,19 +120,19 @@ export default function Home() {
             ))}
           </div>
 
-          {/* Display number of quotes found for the keyword */}
+          {/* Results Header */}
           {keyword && results.length > 0 && (
             <div className="text-center mt-4">
               <h2 className="text-xl font-bold">
                 Quotes for: <span className="italic">{keyword}</span>
               </h2>
-              <p className="text-sm text-[#806a5a] dark:text-[#b4a78e] italic">
+              <p className="text-sm text-gray-600 dark:text-gray-400 italic">
                 {results.length} quote{results.length !== 1 && "s"} found
               </p>
             </div>
           )}
 
-          {/* List of quotes matching the search */}
+          {/* Quotes List */}
           {results.length > 0 ? (
             <div ref={quoteRef} className="mt-6 space-y-4">
               <ul className="list-disc list-inside space-y-4">
@@ -155,10 +144,10 @@ export default function Home() {
                     transition={{ duration: 0.3, delay: index * 0.1 }}
                     className="bg-white/70 dark:bg-[#3a3123] border border-[#e5d8c0] dark:border-[#7f7152] rounded-xl px-5 py-4 shadow-md"
                   >
-                    <p className="text-lg italic leading-relaxed">
+                    <p className="text-lg italic leading-relaxed text-gray-900 dark:text-gray-100">
                       “{q.quote}”
                     </p>
-                    <p className="text-right mt-2 text-sm font-medium text-[#806a5a] dark:text-[#b4a78e]">
+                    <p className="text-right mt-2 text-sm font-medium text-gray-600 dark:text-gray-400">
                       — {q.author}
                     </p>
                   </motion.li>
@@ -166,15 +155,15 @@ export default function Home() {
               </ul>
             </div>
           ) : (
-            // Show message if no quotes found for entered keyword
-            keyword && (
+            keyword &&
+            searched && (
               <p className="text-red-600 dark:text-red-400 italic text-center mt-4">
                 No matching quotes found.
               </p>
             )
           )}
 
-          {/* Download buttons shown only if there are results */}
+          {/* Download Buttons */}
           {results.length > 0 && (
             <div className="text-center mt-8 space-y-4">
               <div className="inline-block rounded-full bg-[#f3e9da] dark:bg-[#4b3c29] px-6 py-4 shadow-md space-x-4">
@@ -196,13 +185,10 @@ export default function Home() {
         </div>
       </main>
 
-      {/* Footer Section */}
-      <footer>
-        {/* Copyright text */}
+      {/* Footer */}
+      <footer className="text-center mt-10">
         <p>© 2025 Nexium — Inspiring Quotes for You</p>
-
-        {/* Footer buttons with simple alert actions */}
-        <div className="footer-buttons">
+        <div className="footer-buttons flex justify-center gap-4 mt-4">
           <Button
             onClick={() => alert("Contact us at contact@nexium.com")}
             className="bg-[#4b2e2e] dark:bg-[#d1b280] text-white dark:text-[#4b2e2e] rounded-full px-6 py-2 shadow-md hover:bg-[#3a1f1f] dark:hover:bg-[#b39356] transition duration-300"
