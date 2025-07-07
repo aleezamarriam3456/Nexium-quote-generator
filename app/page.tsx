@@ -3,10 +3,10 @@
 import React, { useState, useRef } from "react";
 import { quotes } from "@/data/quotes";
 import html2canvas from "html2canvas";
-import { Input } from "@/component/ui/input";      // components (plural)
-import { Button } from "@/component/ui/button";    // components (plural)
+import { Input } from "@/component/ui/input";
+import { Button } from "@/component/ui/button";
 import { motion } from "framer-motion";
-import { ModeToggle } from "@/component/mode-toggle";  // components (plural)
+import { ModeToggle } from "@/component/mode-toggle";
 
 export default function Home() {
   const [keyword, setKeyword] = useState("");
@@ -37,7 +37,7 @@ export default function Home() {
       <div className="max-w-2xl mx-auto space-y-8">
         {/* Header */}
         <div className="flex justify-between items-center">
-          <h1 className="text-4xl font-bold tracking-tight">Quote Generator</h1>
+          <h1 className="text-4xl font-extrabold tracking-tight">Quote Generator</h1>
           <ModeToggle />
         </div>
 
@@ -46,10 +46,8 @@ export default function Home() {
           <Input
             placeholder="Enter a keyword (e.g., motivation)"
             value={keyword}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setKeyword(e.target.value)
-            }
-            onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
+            onChange={(e) => setKeyword(e.target.value)}
+            onKeyDown={(e) => {
               if (e.key === "Enter") handleSearch();
             }}
             className="bg-[#fffaf2] dark:bg-[#3b342c] border-[#d9c7a5] dark:border-[#6f675e] text-[#4b2e2e] dark:text-[#d9c7a5] placeholder:text-[#a48c7b] dark:placeholder:text-[#b4a78e] rounded-full px-4 py-2 focus:ring-2 focus:ring-[#c9b391] dark:focus:ring-[#a58f66] transition-colors duration-300"
@@ -63,52 +61,64 @@ export default function Home() {
         </div>
 
         {/* Tag Buttons */}
-        <div className="flex gap-2 flex-wrap">
+        <div className="flex flex-wrap gap-3 justify-center">
           {tags.map((tag) => (
-            <Button
+            <button
               key={tag}
-              variant="outline"
               onClick={() => {
                 setKeyword(tag);
                 handleSearch(tag);
               }}
-              className="border-[#c9b391] dark:border-[#a58f66] text-[#4b2e2e] dark:text-[#d9c7a5] rounded-full px-4 py-2 hover:bg-[#f3e9da] dark:hover:bg-[#4b3c29] shadow-sm transition duration-300"
+              className="px-4 py-2 rounded-full border border-[#c9b391] dark:border-[#a58f66] text-[#4b2e2e] dark:text-[#d9c7a5] bg-white/80 dark:bg-[#3d3322] hover:bg-[#f2e5d1] dark:hover:bg-[#4a3b27] font-semibold tracking-wide shadow-sm transition-all duration-300"
+              style={{ fontFamily: "Georgia, serif" }}
             >
-              {tag}
-            </Button>
+              {tag.charAt(0).toUpperCase() + tag.slice(1)}
+            </button>
           ))}
         </div>
 
         {/* Result Count */}
-        {keyword && (
-          <p className="text-sm text-[#806a5a] dark:text-[#b4a78e] italic transition-colors duration-300">
-            {results.length} quote{results.length !== 1 && "s"} found for "{keyword}"
-          </p>
+        {keyword && results.length > 0 && (
+          <div className="text-center">
+            <h2 className="text-xl font-bold mt-6 mb-2">
+              Quotes for: <span className="italic">{keyword}</span>
+            </h2>
+            <p className="text-sm text-[#806a5a] dark:text-[#b4a78e] italic">
+              {results.length} quote{results.length !== 1 && "s"} found
+            </p>
+          </div>
         )}
 
         {/* Quotes Display */}
         {results.length > 0 ? (
-          <div className="space-y-4" ref={quoteRef}>
+          <div ref={quoteRef} className="space-y-6 mt-4">
             {results.map((q, index) => (
               <motion.div
                 key={index}
-                className="p-6 rounded-xl border border-[#e5d8c0] dark:border-[#7f7152] bg-white/70 dark:bg-[#4b432e]/90 backdrop-blur shadow-md transition-all hover:scale-[1.02]"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4 }}
+                transition={{ duration: 0.3, delay: index * 0.1 }}
+                className="rounded-2xl border border-[#e5d8c0] dark:border-[#7f7152] p-6 bg-white/80 dark:bg-[#3a3123] shadow-lg"
               >
-                <p className="text-lg italic font-medium text-[#4b2e2e] dark:text-[#d9c7a5]">
-                  “{q.quote}”
-                </p>
-                <p className="text-sm text-right mt-2 text-[#806a5a] dark:text-[#b4a78e]">
-                  — {q.author}
-                </p>
+                <div className="flex gap-3">
+                  <div className="text-xl font-bold text-[#c9b391] dark:text-[#d1b280]">
+                    {index + 1}.
+                  </div>
+                  <div>
+                    <p className="text-lg italic leading-relaxed text-[#4b2e2e] dark:text-[#d9c7a5]">
+                      “{q.quote}”
+                    </p>
+                    <p className="text-sm text-right mt-2 text-[#806a5a] dark:text-[#b4a78e]">
+                      — {q.author}
+                    </p>
+                  </div>
+                </div>
               </motion.div>
             ))}
           </div>
         ) : (
           keyword && (
-            <p className="text-red-600 dark:text-red-400 italic">
+            <p className="text-red-600 dark:text-red-400 italic text-center">
               No matching quotes found.
             </p>
           )
@@ -116,12 +126,16 @@ export default function Home() {
 
         {/* Download Button */}
         {results.length > 0 && (
-          <Button
-            onClick={handleDownload}
-            className="bg-[#4b2e2e] dark:bg-[#d1b280] text-white dark:text-[#4b2e2e] rounded-full px-6 py-2 shadow-md hover:bg-[#3a1f1f] dark:hover:bg-[#b39356] transition duration-300 mt-4"
-          >
-            Download All Quotes as Image
-          </Button>
+          <div className="text-center mt-6">
+            <div className="inline-block rounded-full bg-[#f3e9da] dark:bg-[#4b3c29] px-6 py-4 shadow-md">
+              <Button
+                onClick={handleDownload}
+                className="bg-[#4b2e2e] dark:bg-[#d1b280] text-white dark:text-[#4b2e2e] rounded-full px-6 py-2 hover:bg-[#3a1f1f] dark:hover:bg-[#b39356] transition duration-300"
+              >
+                Download All Quotes as Image
+              </Button>
+            </div>
+          </div>
         )}
       </div>
     </main>
